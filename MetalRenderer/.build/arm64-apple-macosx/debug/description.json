@@ -1,0 +1,441 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+    "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle/Shaders.metal" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Shaders.metal"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle/Shaders.metal"
+        }
+      ]
+    }
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.FTCSimRenderer-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources",
+      "importPath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<FTCSimRenderer-arm64-apple-macosx-debug.module-resources>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "FTCSimRenderer",
+      "moduleOutputPath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule",
+      "objects" : [
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+        "-module-cache-path",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "FTCSimRenderer_main",
+        "-color-diagnostics",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "metalrenderer"
+      ],
+      "outputFileMapPath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift",
+        "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift"
+      ],
+      "tempsPath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "FTCSimRenderer" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "FTCSimRenderer",
+      "-package-name",
+      "metalrenderer",
+      "-c",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift",
+      "-I",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+      "-module-cache-path",
+      "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "FTCSimRenderer_main",
+      "-color-diagnostics",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "metalrenderer",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "FTCSimRenderer" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist"
+    },
+    "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources"
+    },
+    "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList"
+    },
+    "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}

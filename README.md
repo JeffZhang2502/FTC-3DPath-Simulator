@@ -26,53 +26,115 @@ questions like:
 This simulator answers those questions **before the robot ever touches the
 field**.  It combines A\* pathfinding, continuous collision detection,
 Mecanum kinematics, and 3D projectile physics into a single real-time
-environment driven by a JavaFX 3D viewport.
+environment.
 
 ---
 
 ## System Architecture
 
+The system is split into **two processes** communicating over localhost TCP:
+
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    SimulatorApp (JavaFX UI)              │
-│  ┌──────────────┐  ┌──────────────────────────────────┐ │
-│  │ Control Panel │  │  3D SubScene (PerspectiveCamera) │ │
-│  │ - Dimensions  │  │  - Field mesh + 6×6 tile grid   │ │
-│  │ - Motor picker│  │  - Triangular obelisk (MeshView) │ │
-│  │ - OpMode text │  │  - Perimeter walls (11 panels)  │ │
-│  │ - .java upload│  │  - Robot Box + trail + A* path  │ │
-│  │ - Start/Reset │  │  - Ball Sphere + parabola trail │ │
-│  └──────────────┘  └──────────────────────────────────┘ │
-├─────────────────────────────────────────────────────────┤
-│                AutoSimulationEngine                      │
-│  ┌──────────┐  ┌────────────┐  ┌──────────────────────┐ │
-│  │ Cmd Parser│  │ A* PathFind│  │ BallProjectileEngine │ │
-│  │ MOVE_TO   │  │ 8-dir grid │  │ g = 386.09 in/s²    │ │
-│  │ INTAKE    │  │ Diagonal h │  │ elastic rim bounce   │ │
-│  │ LAUNCH    │  │ Bresenham  │  │ goal-plane scoring   │ │
-│  │ DETECT    │  │ LOS smooth │  │ 3D trajectory log    │ │
-│  │ WAIT      │  └────────────┘  └──────────────────────┘ │
-│  └──────────┘                                            │
-├─────────────────────────────────────────────────────────┤
-│                     Model Layer                          │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
-│  │Robot     │  │RobotProf.│  │FieldMap  │  │MotorType│ │
-│  │kinematics│  │motor spec│  │144×144   │  │RPM+torque│ │
-│  │collision │  │launcher  │  │grid+cad  │  │enum     │ │
-│  └──────────┘  └──────────┘  └──────────┘  └─────────┘ │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│         Swift + Metal Frontend (Apple Silicon native)     │
+│  ┌──────────────┐  ┌───────────────────────────────────┐ │
+│  │ Control Panel │  │  MTKView (Metal 3D Viewport)      │ │
+│  │ (SwiftUI)     │  │  - Field mesh + 6×6 tile grid    │ │
+│  │ - Dimensions  │  │  - Triangular obelisk (prism)    │ │
+│  │ - Motor picker│  │  - Perimeter walls (11 panels)   │ │
+│  │ - OpMode text │  │  - Robot box + trail + A* path   │ │
+│  │ - .java upload│  │  - Ball sphere + parabola trail  │ │
+│  │ - Start/Reset │  │  - Orbit camera (drag/scroll)    │ │
+│  └──────┬───────┘  └───────────────────────────────────┘ │
+│         │  TCP client :9876 (newline-delimited JSON)     │
+└─────────┼────────────────────────────────────────────────┘
+          │
+          │  localhost TCP
+┌─────────┼────────────────────────────────────────────────┐
+│         │    Java Process (headless simulation server)    │
+│  ┌──────┴───────┐  ┌───────────────────────────────────┐ │
+│  │  SimServer   │  │  AutoSimulationEngine              │ │
+│  │  - cmd parse │  │  - A* pathfinding                 │ │
+│  │  - JSON ser  │  │  - Continuous collision detection │ │
+│  │  - frame tx  │  │  - Ball projectile physics        │ │
+│  └──────────────┘  │  - Mecanum kinematics             │ │
+│                     └───────────────────────────────────┘ │
+│  ┌───────────────────────────────────────────────────┐    │
+│  │  Model Layer                                       │    │
+│  │  Robot | RobotProfile | FieldMap | MotorType      │    │
+│  │  Pose2d | PoseVelocity2d | PathFinder             │    │
+│  └───────────────────────────────────────────────────┘    │
+└───────────────────────────────────────────────────────────┘
 ```
+
+### IPC Protocol (JSON Lines, newline-delimited)
+
+**Renderer → Server (commands):**
+
+| Command | JSON | Description |
+|---------|------|-------------|
+| Configure | `{"cmd":"cfg","w":18,"l":18,"h":8,"cm":"GOBILDA_5203_19_2",...}` | Set robot profile |
+| Load Program | `{"cmd":"prog","txt":"MOVE_TO(24,24)\nLAUNCH"}` | Load auto program |
+| Start | `{"cmd":"start"}` | Begin 30s simulation |
+| Reset | `{"cmd":"reset"}` | Reset to initial state |
+| Upload | `{"cmd":"upload","path":"/path/to/OpMode.java"}` | Parse FTC OpMode |
+
+**Server → Renderer (responses):**
+
+| Type | JSON | Description |
+|------|------|-------------|
+| ready | `{"t":"ready"}` | Server ready, sent on connect |
+| status | `{"t":"status","txt":"..."}` | Human-readable log message |
+| fld | `{"t":"fld","els":[{...}]}` | Static field elements (once) |
+| frm | `{"t":"frm","e":1.5,"fn":false,"st":"...","r":{...},"trl":[...],"pth":[...],"bal":{...}}` | Per-frame state |
+| end | `{"t":"end","txt":"..."}` | Simulation complete |
+| err | `{"t":"err","txt":"..."}` | Error message |
+
+### Metal Rendering Pipeline
+
+The Swift frontend renders all geometry through a single Metal render pass:
+
+| Component | Implementation |
+|-----------|---------------|
+| **Shaders** | `Shaders.metal` — Blinn-Phong vertex/fragment shader |
+| **Per-object uniforms** | Model matrix + normal matrix + material color + alpha (push-constant style via `setVertexBytes`) |
+| **Lighting** | Single directional light + ambient fill |
+| **Meshes** | Procedurally generated: box (6-face), UV sphere (16×24), cylinder (caps + tube), triangular prism (obelisk) |
+| **Blending** | Alpha blending enabled for transparent materials (zones, trail, path) |
+| **MSAA** | 4× multisample anti-aliasing |
+| **Camera** | Orbit (azimuth, elevation, distance) — mouse drag to orbit, scroll to zoom |
+
+### Why Metal on Apple Silicon?
+
+The original JavaFX 3D implementation uses Prism's OpenGL/Metal translation
+layer, which routes through an OpenGL compatibility path even on Apple Silicon
+macOS. This results in:
+
+- **Lower fill rate** — JavaFX 3D doesn't use Metal's tile-based deferred
+  rendering optimizations on Apple GPUs
+- **No MSAA control** — `SceneAntialiasing.BALANCED` is opaque and often falls
+  back to FXAA
+- **Artifacts** — Transparency sorting issues in JavaFX's retained-mode scene
+  graph
+
+Metal on Apple Silicon provides:
+- Native tile-based deferred rendering with zero driver translation overhead
+- Explicit 4× MSAA hardware resolve
+- Proper alpha-to-coverage and correct depth-before-blend ordering
+- Theoretical 3–5× frame throughput improvement on M-series GPUs for this
+  scene complexity
 
 ### MVC Separation
 
-| Layer | Package | Responsibility |
-|-------|---------|---------------|
-| **Model** | `simulator.model` | Robot kinematics, `RobotProfile` (motor specs, dimensions, capabilities), `FieldMap` (144×144 grid from CAD BOM), `MotorType` enum |
-| **Engine** | `simulator.engine` | Command parsing, A\* path planning, continuous collision detection with sliding, projectile physics, 30-second match clock |
-| **Algorithm** | `simulator.algorithm` | A\* on 144×144 grid, diagonal-distance heuristic, Bresenham line-of-sight path smoothing |
-| **Physics** | `simulator.physics` | 3D parabolic projectile motion, elastic goal-rim rebound, gravity = 386.09 in/s² |
-| **I/O** | `simulator.io` | Regex-based FTC Java OpMode parser (extracts `moveTo`, `shoot`, `sleep`, `intake`) |
-| **View** | `simulator.ui` | JavaFX `SubScene` with `PerspectiveCamera` orbit controls, `TriangleMesh` obelisk, real-time `AnimationTimer` loop |
+| Layer | Language | Package | Responsibility |
+|-------|----------|---------|---------------|
+| **Model** | Java | `simulator.model` | Robot kinematics, `RobotProfile`, `FieldMap` (144×144 grid from CAD BOM), `MotorType` enum, `ColorRGB` |
+| **Engine** | Java | `simulator.engine` | Command parsing, A\* path planning, continuous collision detection with sliding, projectile physics, 30-second match clock |
+| **Algorithm** | Java | `simulator.algorithm` | A\* on 144×144 grid, diagonal-distance heuristic, Bresenham line-of-sight path smoothing |
+| **Physics** | Java | `simulator.physics` | 3D parabolic projectile motion, elastic goal-rim rebound, gravity = 386.09 in/s² |
+| **I/O** | Java | `simulator.io` | Regex-based FTC Java OpMode parser |
+| **Server** | Java | `simulator.server` | TCP server (`SimServer`), frame state serialization (`FrameState`) |
+| **Renderer** | Swift | `FTCSimRenderer` | Metal 3D viewport + SwiftUI control panel |
 
 ---
 
@@ -125,9 +187,6 @@ worldX = x + f·cos(θ) − ℓ·sin(θ)
 worldY = y + f·sin(θ) + ℓ·cos(θ)
 ```
 
-Collision is declared if any sample point falls inside an obstacle cell in the
-144×144 grid.
-
 ### 4. Surface-Sliding Collision Response
 
 When a collision is detected, the robot does **not** simply reverse direction.
@@ -140,16 +199,11 @@ d_slide = argmax_{a ∈ angles}  [ cos(a)·d̂_x + sin(a)·d̂_y ]
           subject to:  pose + step·(cos(a), sin(a))  is collision-free
 ```
 
-If no direction is free, the robot is declared **stuck** and the `MOVE_TO`
-command aborts.
-
 ### 5. A\* Pathfinding with Diagonal Heuristic
 
 **State space:**  144 × 144 grid cells (1 inch resolution).
 
 **Neighbourhood:**  8-directional (cardinal cost = 1.0, diagonal cost = √2).
-Diagonal moves include a *corner-cutting guard*: if either adjacent cardinal
-cell is blocked, the diagonal move is disallowed.
 
 **Heuristic (admissible & consistent):**
 
@@ -157,18 +211,9 @@ cell is blocked, the diagonal move is disallowed.
 h = max(dr, dc) + (√2 − 1)·min(dr, dc)
 ```
 
-This is the exact optimal-path cost on an unblocked 8-connected grid,
-guaranteeing A\* optimality.
-
-**Path smoothing:**  Raw grid-path waypoints are collapsed via
-**Bresenham line-of-sight**.  For each anchor waypoint `P_i`, the furthest
-visible successor `P_j` is found such that every cell along the Bresenham
-rasterised line `P_i → P_j` is obstacle-free.  Intermediate waypoints are
-discarded, yielding a compact, natural path.
+**Path smoothing:**  Bresenham line-of-sight collapse of redundant waypoints.
 
 ### 6. 3D Ball Projectile Physics
-
-The ball obeys Newtonian projectile motion under uniform gravity:
 
 ```
 x(t) = x₀ + v₀·cos(φ)·cos(θ)·t
@@ -176,36 +221,9 @@ y(t) = y₀ + v₀·cos(φ)·sin(θ)·t
 z(t) = z₀ + v₀·sin(φ)·t − ½·g·t²
 ```
 
-where `g = 386.09 in/s²`, `φ` is the launch elevation angle (default 45°),
-`θ` is the robot heading, and `v₀` is derived from the launcher motor RPM and
-flywheel radius:
-
-```
-v₀ = (RPM / 60) · 2π · r_flywheel
-```
-
-**Goal-plane scoring:**  When `z(t) ≤ 38.75"` (rim height from CAD
-`am-5735`), the horizontal distance to the goal centre is computed.  If
-`d ≤ R_inner` (8"), the ball scores.  If `R_inner < d ≤ R_inner + 6"`, the
-velocity vector undergoes **elastic reflection** off the rim normal `n̂`:
-
-```
-v' = v − (1 + e)·(v·n̂)·n̂,    e = 0.58  (coefficient of restitution)
-```
-
-The ball continues its flight with the new initial conditions, producing a
-realistic rim-deflection arc.
+where `g = 386.09 in/s²`, `v₀ = (RPM / 60) · 2π · r_flywheel`.
 
 ### 7. Motor → Physics Mapping
-
-Chassis maximum linear velocity is derived from motor RPM and drive-wheel
-radius:
-
-```
-v_max = (RPM_chassis / 60) · 2π · r_wheel
-```
-
-Three motors are modelled with real FTC specifications:
 
 | Motor | RPM | Rated Torque (N·m) |
 |-------|-----|-------------------|
@@ -213,52 +231,53 @@ Three motors are modelled with real FTC specifications:
 | goBILDA 5203 30:1 | 196 | 2.4 |
 | REV HD Hex 20:1 | 300 | 1.2 |
 
+```
+v_max = (RPM_chassis / 60) · 2π · r_wheel
+```
+
 ---
 
 ## CAD Verification
 
 The field geometry is validated against the official Onshape CAD assembly
-**am-5700** (`DECODE™ presented by RTX Full Field`).  A Python scanner
-(`cad_scanner.py`) extracts the Bill of Materials from the Parasolid `.x_t`
-binary, identifying **51 unique parts** across **94 instances**:
-
-| Part | Qty | Dimensions (in) | Description |
-|------|-----|-----------------|-------------|
-| am-2160b | 11 | 48 × 1.25 × 12.125 | Perimeter wall panels |
-| am-2600b | 4 | 3 × 3 × 12.125 | Corner brackets |
-| am-5715 | 2 | 11 × 11 × 4 | Obelisk base |
-| am-5716 | 2 | 11 △ × 19 | Obelisk top (total 23") |
-| am-5735 | 2 | 20 × 20 × 38.75 | Goal assemblies |
-| am-5718 | 2 | 18 × 12 × 12 | Classifier boxes |
-| am-5707 | 2 | 24 × 12 × 6 | Ramps |
-| am-5704 | 3 | 24 × 12 × 18 | Gate assemblies |
+**am-5700** (`DECODE™ presented by RTX Full Field`).  51 unique parts
+across 94 instances.
 
 > **Note:**  The Parasolid kernel format prevents direct vertex extraction
 > without a licensed solver.  The bounding-box positions in `FieldMap.java`
 > are derived from the FTC Game Manual §9 ARENA drawings cross-referenced
-> with the BOM instance counts.  Teams with Onshape access can export precise
-> centroid coordinates to further refine `FieldMap` placement constants.
+> with the BOM instance counts.
 
 ---
 
-## How to Run
+## How to Build & Run
 
 ### Prerequisites
 
-- **JDK 17+** (the bundled Gradle wrapper downloads Gradle 8.5 automatically)
-- A graphical display (JavaFX 3D requires a windowing system)
+- **Java 17+** (e.g. [Oracle JDK](https://jdk.java.net/), [Temurin](https://adoptium.net/))
+- **Xcode 15+** (for Swift + Metal compilation)
+- **macOS 13+** (Metal 3 required)
+- **Apple Silicon Mac** (recommended; Intel macOS also works via Metal)
 
-### Build & Launch
+### Quick Start
+
+**Terminal 1 — Start the headless Java simulation server:**
 
 ```bash
-# Compile, test, and package
-./gradlew build
-
-# Launch the 3D simulator
-./gradlew run
+./run_server.sh
+# Or with a custom port:
+./run_server.sh 9876
 ```
 
-On Windows, replace `./gradlew` with `gradlew.bat`.
+**Terminal 2 — Build and launch the Swift Metal frontend:**
+
+```bash
+cd MetalRenderer
+swift run
+```
+
+This opens the simulation window.  The Swift app automatically connects to the
+Java server on `localhost:9876`.
 
 ### Using the Simulator
 
@@ -267,7 +286,7 @@ On Windows, replace `./gradlew` with `gradlew.bat`.
    - Select **Chassis Motor** and **Launcher Motor** from the dropdowns.
    - Toggle **Vision Sensor**, **Intake Type**, and **Scoring Capability**.
 
-2. **Write an autonomous program** in the text area (one command per line):
+2. **Write an autonomous program** in the text area:
    ```
    MOVE_TO(24, 24)
    INTAKE
@@ -283,13 +302,31 @@ On Windows, replace `./gradlew` with `gradlew.bat`.
    - Real-time log messages in the status bar.
 
 4. **Camera controls:**
-   - **Drag** to orbit around the field centre.
+   - **Drag** in the 3D viewport to orbit around the field centre.
    - **Scroll** to zoom in/out.
+
+### Build Individual Components
+
+```bash
+# Java server (standalone compile)
+cd FTC-Path-Simulator
+javac -d out --release 17 -cp lib/gson-2.10.1.jar $(find src/main/java -name "*.java")
+java -cp out:lib/gson-2.10.1.jar simulator.server.SimServer
+
+# Swift Metal app (standalone)
+cd MetalRenderer
+swift build
+swift run
+```
 
 ### Running Tests
 
 ```bash
+cd FTC-Path-Simulator
+# Tests require Gradle — if available:
 ./gradlew test
+# Or compile tests manually:
+javac -d out --release 17 -cp lib/gson-2.10.1.jar:$(find ~/.m2 -name "junit-jupiter-api-*.jar" 2>/dev/null | head -1) $(find src/test -name "*.java")
 ```
 
 Verifies Mecanum kinematics (pure-forward, pure-rotation, round-trip
@@ -300,29 +337,104 @@ consistency) and forward/inverse kinematic duality.
 ## Project Structure
 
 ```
-src/main/java/simulator/
-├── Main.java                         # JavaFX Application entry point
-├── algorithm/
-│   └── PathFinder.java               # A* with diagonal heuristic + LOS smoothing
-├── engine/
-│   └── AutoSimulationEngine.java      # Command parser + 30s match driver
-├── io/
-│   └── JavaCodeParser.java           # Regex FTC OpMode → command translator
-├── model/
-│   ├── Pose2d.java                   # (x, y, heading)
-│   ├── PoseVelocity2d.java           # (vx, vy, vω)
-│   ├── Robot.java                    # Mecanum kinematics + collision detection
-│   ├── RobotProfile.java             # Configurable hardware profile
-│   ├── MotorType.java               # FTC motor enum (RPM, torque)
-│   └── FieldMap.java                # 144×144 grid, CAD-verified elements
-├── physics/
-│   └── BallProjectileEngine.java     # 3D projectile + elastic rim rebound
-└── ui/
-    └── SimulatorApp.java             # JavaFX 3D viewport + control panel
-
-src/test/java/simulator/model/
-└── KinematicsTest.java               # JUnit 5 kinematics unit tests (4 tests)
+FTC-3DPath-Simulator/
+├── run_server.sh                          # Start Java simulation server
+├── README.md
+│
+├── FTC-Path-Simulator/                    # Java simulation engine
+│   ├── build.gradle
+│   ├── lib/gson-2.10.1.jar
+│   └── src/main/java/simulator/
+│       ├── Main.java                      # Headless entry point
+│       ├── algorithm/
+│       │   └── PathFinder.java            # A* with diagonal heuristic + LOS smoothing
+│       ├── engine/
+│       │   └── AutoSimulationEngine.java  # Command parser + 30s match driver
+│       ├── io/
+│       │   └── JavaCodeParser.java        # Regex FTC OpMode → command translator
+│       ├── model/
+│       │   ├── Pose2d.java                # (x, y, heading)
+│       │   ├── PoseVelocity2d.java        # (vx, vy, vω)
+│       │   ├── Robot.java                 # Mecanum kinematics + collision detection
+│       │   ├── RobotProfile.java          # Configurable hardware profile
+│       │   ├── MotorType.java             # FTC motor enum (RPM, torque)
+│       │   ├── FieldMap.java              # 144×144 grid, CAD-verified elements
+│       │   └── ColorRGB.java              # JavaFX-free RGBA color
+│       ├── physics/
+│       │   └── BallProjectileEngine.java  # 3D projectile + elastic rim rebound
+│       └── server/
+│           ├── SimServer.java             # TCP server + JSON IPC
+│           └── FrameState.java            # Per-frame state snapshot
+│
+└── MetalRenderer/                         # Swift + Metal frontend
+    ├── Package.swift
+    └── Sources/FTCSimRenderer/
+        ├── main.swift                     # NSApplication entry point
+        ├── AppDelegate.swift              # Window setup
+        ├── ContentView.swift              # SwiftUI sidebar + 3D view
+        ├── MetalView.swift                # MTKView wrapper + orbit camera
+        ├── Renderer.swift                 # Metal draw loops + uniform bindings
+        ├── SimClient.swift                # TCP client + JSON decoder
+        ├── SimState.swift                 # Codable frame/field models
+        ├── MeshGenerator.swift            # Procedural mesh generators
+        ├── Camera.swift                   # Orbit camera matrix math
+        └── Shaders.metal                  # Blinn-Phong vertex/fragment shaders
 ```
+
+---
+
+## Refactoring Notes (JavaFX → Metal)
+
+### Motivation
+
+The original implementation used **JavaFX 3D** (`SubScene`, `Box`, `Sphere`,
+`Cylinder`, `MeshView`, `PhongMaterial`, `PerspectiveCamera`, `AnimationTimer`)
+for all rendering.  On Apple Silicon macOS, JavaFX's Prism renderer routes
+through OpenGL → Metal translation, causing:
+
+- Suboptimal GPU utilisation (no Metal tile-based deferred rendering)
+- Limited anti-aliasing quality
+- Transparency sorting artefacts
+
+### What Changed
+
+| Component | Before | After |
+|-----------|--------|-------|
+| **3D Rendering** | JavaFX SubScene + PerspectiveCamera + TriangleMesh | Metal MTKView + custom Blinn-Phong pipeline |
+| **2D UI** | JavaFX BorderPane, GridPane, Button, TextField, ComboBox, TextArea | SwiftUI HSplitView, GroupBox, Picker, TextEditor |
+| **Window** | JavaFX Stage + Scene | NSWindow + NSHostingView (SwiftUI) |
+| **Game Loop** | JavaFX AnimationTimer | MTKView draw loop (display-link based) |
+| **Camera** | Rotate/Translate transforms | simd float4x4 lookAt + perspective |
+| **Materials** | 16 PhongMaterial instances | Shader uniform: materialColor + alpha |
+| **Lighting** | PointLight + AmbientLight nodes | GLSL: Blinn-Phong directional + ambient |
+| **Color library** | javafx.scene.paint.Color | simulator.model.ColorRGB |
+
+### What Was Preserved (Untouched)
+
+All simulation logic files remain **completely unchanged**:
+- `AutoSimulationEngine.java` — 570 lines, zero diffs
+- `PathFinder.java` — A\* pathfinding
+- `BallProjectileEngine.java` — 3D projectile physics
+- `Robot.java` — Mecanum kinematics + collision
+- `RobotProfile.java` — Hardware configuration
+- `MotorType.java` — Motor enum
+- `Pose2d.java`, `PoseVelocity2d.java` — Pose types
+- `JavaCodeParser.java` — OpMode parser
+- `KinematicsTest.java` — Unit tests
+
+### Dependencies
+
+**Java (reduced):**
+- `com.google.code.gson:gson:2.10.1` — JSON serialization for IPC (replaces JavaFX plugin)
+- `org.junit.jupiter:junit-jupiter:5.10.1` — tests (unchanged)
+
+**Swift (new):**
+- macOS 13+ SDK (Metal 3, SwiftUI)
+- No external dependencies — pure Foundation + MetalKit + SwiftUI
+
+**Removed:**
+- `org.openjfx.javafxplugin` (version 0.1.0)
+- `javafx.controls`, `javafx.graphics`, `javafx.fxml` modules
 
 ---
 
@@ -336,5 +448,5 @@ DECODE<sup>SM</sup> is a service mark of *FIRST*<sup>&reg;</sup>.
 
 ---
 
-*Built with Java 17, JavaFX 3D, Gradle 8.5, and the FTC DECODE official CAD
+*Built with Java 17, Swift 5.9, Metal 3, and the FTC DECODE official CAD
 assembly (am-5700).*

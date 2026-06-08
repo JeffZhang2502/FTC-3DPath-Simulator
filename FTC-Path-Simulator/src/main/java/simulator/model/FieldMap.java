@@ -2,7 +2,6 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.paint.Color;
 
 /**
  * Digital-twin representation of the 144×144 inch FTC DECODE field
@@ -100,11 +99,11 @@ public class FieldMap {
         public final double minX, minY, maxX, maxY;   // world inches (XY footprint)
         public final double height;                     // Z height in inches
         public final String label;
-        public final Color color;
+        public final ColorRGB color;
 
         public FieldElement(ZoneType type, double minX, double minY,
                             double maxX, double maxY, double height,
-                            String label, Color color) {
+                            String label, ColorRGB color) {
             this.type = type; this.minX = minX; this.minY = minY;
             this.maxX = maxX; this.maxY = maxY; this.height = height;
             this.label = label; this.color = color;
@@ -112,7 +111,7 @@ public class FieldMap {
 
         /** Convenience: flat element (height = 0). */
         public FieldElement(ZoneType type, double minX, double minY,
-                            double maxX, double maxY, String label, Color color) {
+                            double maxX, double maxY, String label, ColorRGB color) {
             this(type, minX, minY, maxX, maxY, 0.0, label, color);
         }
     }
@@ -181,7 +180,7 @@ public class FieldMap {
 
     private void fillRect(double minX, double minY, double maxX, double maxY,
                           boolean isObstacle, ZoneType type, String label,
-                          Color color) {
+                          ColorRGB color) {
         elements.add(new FieldElement(type, minX, minY, maxX, maxY,
                                       isObstacle ? WALL_HEIGHT : 0.0,
                                       label, color));
@@ -196,7 +195,7 @@ public class FieldMap {
     /** Fill an element with explicit 3D height. */
     private void fillElement(double minX, double minY, double maxX, double maxY,
                              double height, boolean isObstacle,
-                             ZoneType type, String label, Color color) {
+                             ZoneType type, String label, ColorRGB color) {
         elements.add(new FieldElement(type, minX, minY, maxX, maxY,
                                       height, label, color));
         if (!isObstacle) return;
@@ -256,19 +255,19 @@ public class FieldMap {
         // Corner brackets (am-2600b, 3"×3").
         double cs = CORNER_SIZE;
         fillRect(-HALF_FIELD - cs,  HALF_FIELD, -HALF_FIELD,  HALF_FIELD + cs, true,
-                 ZoneType.OBSTACLE, "NW Corner", Color.rgb(140, 140, 145, 0.8));
+                 ZoneType.OBSTACLE, "NW Corner", new ColorRGB(140, 140, 145, 0.8));
         fillRect(-HALF_FIELD - cs, -HALF_FIELD - cs, -HALF_FIELD, -HALF_FIELD, true,
-                 ZoneType.OBSTACLE, "SW Corner", Color.rgb(140, 140, 145, 0.8));
+                 ZoneType.OBSTACLE, "SW Corner", new ColorRGB(140, 140, 145, 0.8));
         fillRect(HALF_FIELD,  HALF_FIELD, HALF_FIELD + cs,  HALF_FIELD + cs, true,
-                 ZoneType.OBSTACLE, "NE Corner", Color.rgb(140, 140, 145, 0.8));
+                 ZoneType.OBSTACLE, "NE Corner", new ColorRGB(140, 140, 145, 0.8));
         fillRect(HALF_FIELD, -HALF_FIELD - cs, HALF_FIELD + cs, -HALF_FIELD, true,
-                 ZoneType.OBSTACLE, "SE Corner", Color.rgb(140, 140, 145, 0.8));
+                 ZoneType.OBSTACLE, "SE Corner", new ColorRGB(140, 140, 145, 0.8));
 
         // ===== Alliance Starting Zones (§9.2) =====
         fillRect(-72, 24, -24, 72, false, ZoneType.RED_START,
-                 "Red Alliance Start", Color.rgb(255, 80, 80, 0.25));
+                 "Red Alliance Start", new ColorRGB(255, 80, 80, 0.25));
         fillRect(24, 24, 72, 72, false, ZoneType.BLUE_START,
-                 "Blue Alliance Start", Color.rgb(80, 80, 255, 0.25));
+                 "Blue Alliance Start", new ColorRGB(80, 80, 255, 0.25));
 
         // ===== Obelisk (§9.6 + am-5715/am-5716) =====
         //    Base 11"×11"×4" + Top 11" triangular prism × 19" = total 23"
@@ -285,7 +284,7 @@ public class FieldMap {
                 OBELISK_CX + or, OBELISK_CY + or,
                 OBELISK_HEIGHT,
                 "Obelisk (am-5715/5716, 23\" △ prism 11\" face)",
-                Color.rgb(50, 50, 55, 0.9)));
+                new ColorRGB(50, 50, 55, 0.9)));
 
         // ===== Goal assemblies (am-5735, 20"×20"×38.75") =====
         // Red goal: west side of the south opening
@@ -297,24 +296,24 @@ public class FieldMap {
         // Red classifier: west side, near Red goal
         fillElement(-48, -72, -48 + CLASS_W, -72 + CLASS_D,
                      CLASS_H, true, ZoneType.CLASSIFIER_BOX,
-             "Classifier Red (am-5718)", Color.rgb(200, 140, 60, 0.7));
+             "Classifier Red (am-5718)", new ColorRGB(200, 140, 60, 0.7));
         fillElement(-48 - RAMP_D, -72 + CLASS_D, -48, -72 + CLASS_D + RAMP_W,
                      RAMP_H, true, ZoneType.CLASSIFIER_RAMP,
-             "Ramp Red (am-5707)", Color.rgb(180, 120, 40, 0.6));
+             "Ramp Red (am-5707)", new ColorRGB(180, 120, 40, 0.6));
 
         // Blue classifier: east side, near Blue goal
         fillElement(48 - CLASS_W, -72, 48, -72 + CLASS_D,
                      CLASS_H, true, ZoneType.CLASSIFIER_BOX,
-             "Classifier Blue (am-5718)", Color.rgb(200, 140, 60, 0.7));
+             "Classifier Blue (am-5718)", new ColorRGB(200, 140, 60, 0.7));
         fillElement(48, -72 + CLASS_D, 48 + RAMP_D, -72 + CLASS_D + RAMP_W,
                      RAMP_H, true, ZoneType.CLASSIFIER_RAMP,
-             "Ramp Blue (am-5707)", Color.rgb(180, 120, 40, 0.6));
+             "Ramp Blue (am-5707)", new ColorRGB(180, 120, 40, 0.6));
 
         // ===== Scoring zones (tape markers) =====
         fillRect(-48, -76, -20, -60, false, ZoneType.SCORING_ZONE,
-                 "Scoring Zone (Red)",  Color.rgb(255, 215, 0, 0.3));
+                 "Scoring Zone (Red)",  new ColorRGB(255, 215, 0, 0.3));
         fillRect(20, -76,  48, -60, false, ZoneType.SCORING_ZONE,
-                 "Scoring Zone (Blue)", Color.rgb(255, 215, 0, 0.3));
+                 "Scoring Zone (Blue)", new ColorRGB(255, 215, 0, 0.3));
     }
 
     /** Place a single 48" wall panel at (worldX, worldY) with the given
@@ -326,7 +325,7 @@ public class FieldMap {
         fillElement(wx, wy, wx + pw, wy + pd,
                      WALL_HEIGHT, true, ZoneType.PERIMETER_WALL,
                      "Wall Panel (am-2160b, 48\"×12.125\")",
-                     Color.rgb(180, 180, 180, 0.7));
+                     new ColorRGB(180, 180, 180, 0.7));
     }
 
     private void addGoalAssembly(double cx, double cy, String label) {
@@ -335,6 +334,6 @@ public class FieldMap {
                      GOAL_RIM_HEIGHT, true, ZoneType.GOAL_ASSEMBLY,
                      label + " (am-5735, " + GOAL_W + "\"×" + GOAL_W
                      + "\"×" + GOAL_RIM_HEIGHT + "\")",
-                     Color.rgb(40, 40, 50, 0.8));
+                     new ColorRGB(40, 40, 50, 0.8));
     }
 }

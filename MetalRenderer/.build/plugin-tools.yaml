@@ -1,0 +1,92 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "FTCSimRenderer-arm64-apple-macosx-debug.exe": ["<FTCSimRenderer-arm64-apple-macosx-debug.exe>"]
+  "FTCSimRenderer-arm64-apple-macosx-debug.module": ["<FTCSimRenderer-arm64-apple-macosx-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<FTCSimRenderer-arm64-apple-macosx-debug.exe>","<FTCSimRenderer-arm64-apple-macosx-debug.module>"]
+  "test": ["<FTCSimRenderer-arm64-apple-macosx-debug.exe>","<FTCSimRenderer-arm64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer":
+    is-mutated: true
+commands:
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist"]
+    description: "Write auxiliary file /Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist"
+
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources"]
+    description: "Write auxiliary file /Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources"
+
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList"
+
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle/Shaders.metal":
+    tool: copy-tool
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Shaders.metal"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle/Shaders.metal"]
+    description: "Copying /Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Shaders.metal"
+
+  "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+
+  "<FTCSimRenderer-arm64-apple-macosx-debug.exe>":
+    tool: phony
+    inputs: ["<FTCSimRenderer-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    outputs: ["<FTCSimRenderer-arm64-apple-macosx-debug.exe>"]
+
+  "<FTCSimRenderer-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule"]
+    outputs: ["<FTCSimRenderer-arm64-apple-macosx-debug.module>"]
+
+  "C.FTCSimRenderer-arm64-apple-macosx-debug.exe":
+    tool: shell
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/FTCSimRenderer"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug","-o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer","-module-name","FTCSimRenderer","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_FTCSimRenderer_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx13.0","-Xlinker","-add_ast_path","-Xlinker","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.FTCSimRenderer-arm64-apple-macosx-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist"]
+    outputs: ["<FTCSimRenderer-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/FTCSimRenderer"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer-entitlement.plist","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer"]
+
+  "C.FTCSimRenderer-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","<FTCSimRenderer-arm64-apple-macosx-debug.module-resources>","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources"]
+    outputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/AppDelegate.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Camera.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/ContentView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MeshGenerator.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/MetalView.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/Renderer.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimClient.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/SimState.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/main.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/resource_bundle_accessor.swift.o","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule"]
+    description: "Compiling Swift Module 'FTCSimRenderer' (10 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","FTCSimRenderer","-emit-dependencies","-emit-module","-emit-module-path","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules/FTCSimRenderer.swiftmodule","-output-file-map","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/output-file-map.json","-incremental","-c","@/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/sources","-I","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j10","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE","-module-cache-path","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","FTCSimRenderer_main","-color-diagnostics","-swift-version","5","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","metalrenderer"]
+
+  "FTCSimRenderer-arm64-apple-macosx-debug.module-resources":
+    tool: phony
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle/Shaders.metal"]
+    outputs: ["<FTCSimRenderer-arm64-apple-macosx-debug.module-resources>"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Package.swift","/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

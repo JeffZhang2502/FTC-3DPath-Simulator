@@ -1,34 +1,26 @@
 package simulator;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import simulator.ui.SimulatorApp;
+import simulator.server.SimServer;
 
 /**
- * FTC Auto Simulator entry point.
- * Launches the JavaFX application window with control panel and field canvas.
+ * FTC Auto Simulator — headless entry point.
+ *
+ * <p>Starts a TCP server on port 9876 (or the port given as argv[0])
+ * that accepts connections from a Metal/Swift frontend renderer.
+ * The simulation engine runs headless and streams frame-state JSON
+ * over the socket in real time.</p>
+ *
+ * <p>Usage:</p>
+ * <pre>
+ *   ./gradlew run              # default port 9876
+ *   java ... simulator.Main 8080   # custom port
+ * </pre>
  */
-public class Main extends Application {
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-        SimulatorApp app = new SimulatorApp();
-
-        Scene scene = new Scene(app.getRoot(), 1020, 740);
-        stage.setScene(scene);
-        stage.setTitle("FTC Auto Simulator — DECODE 2025-2026");
-        stage.setMinWidth(900);
-        stage.setMinHeight(600);
-        stage.setOnCloseRequest(e -> {
-            System.out.println("FTC Simulator shutdown.");
-            Platform.exit();
-        });
-        stage.show();
+        System.out.println("=== FTC Auto Simulator — Headless Server ===");
+        System.out.println("Waiting for Metal renderer connection...");
+        SimServer.main(args);
     }
 }
