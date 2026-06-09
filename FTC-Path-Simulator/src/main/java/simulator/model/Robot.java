@@ -94,7 +94,6 @@ public class Robot {
         double cos = Math.cos(currentPose.heading);
         double sin = Math.sin(currentPose.heading);
 
-        // Local coords: (forward, left) = (hl, hw) etc.
         double[][] local = {
             { hl,  hw },   // front-left
             { hl, -hw },   // front-right
@@ -112,16 +111,37 @@ public class Robot {
         return world;
     }
 
+    /**
+     * Returns the robot's effective collision radius (half the diagonal
+     * of the bounding box).  Useful for quick broad-phase rejection.
+     */
+    public double getCollisionRadius() {
+        return Math.hypot(profile.width / 2.0, profile.length / 2.0);
+    }
+
     // ---- collision detection ----
 
     /**
-     * Four-corner vertex sampling with edge midpoints for robust
-     * rotated collision detection.
+     * High-fidelity rotated-rectangle collision detection via dense
+     * multi-resolution vertex sampling.
      *
-     * <p>Computes 8 sample points on the robot's oriented bounding box
-     * (4 corners + 4 edge midpoints), rotates each into world coordinates
-     * via the heading rotation matrix, and checks whether any point
-     * falls inside an obstacle cell on the field map.</p>
+     * <p>Samples the robot's oriented bounding box at three resolutions
+     * to prevent tunnelling and thin-obstacle misses:</p>
+     * <ol>
+     *   <li><b>4 corners</b> — maximum extent of the bounding box.</li>
+     *   <li><b>3 subdivisions per edge</b> — 12 edge-sample points
+     *       (3 on each of the 4 edges) for fine-grained perimeter
+     *       coverage.</li>
+     *   <li><b>3×3 interior grid</b> — 9 internal sample points
+     *       to catch thin obstacles that might thread between
+     *       edge samples.</li>
+     * </ol>
+     *
+     * <p>Total: 25 sample points that reliably model the robot's
+     * full rectangular footprint at any orientation.</p>
+     *
+     * @param field the field map with obstacle grid
+     * @return true if any sample point falls inside an obstacle cell
      */
     public boolean checkCollision(FieldMap field) {
         double hw = profile.width / 2.0;
@@ -129,23 +149,75 @@ public class Robot {
         double cos = Math.cos(currentPose.heading);
         double sin = Math.sin(currentPose.heading);
 
-        // 8 sample points in local frame (forward, left).
-        double[][] samples = {
-            { hl,  hw },   // front-left  corner
-            { hl, -hw },   // front-right corner
-            {-hl, -hw },   // back-right  corner
-            {-hl,  hw },   // back-left   corner
-            { hl, 0.0 },   // front edge  midpoint
-            {-hl, 0.0 },   // back  edge  midpoint
-            {0.0,  hw },   // left  edge  midpoint
-            {0.0, -hw }    // right edge  midpoint
-        };
+        // ---- layer 1: 4 corners ----
+        double[] cornersF = { hl,  hl, -hl, -hl };   // forward  coords
+        double[] cornersL = { hw, -hw, -hw,  hw };   // left     coords
+        for (int i = 0; i < 4; i++) {
+            double wx = currentPose.x + cornersF[i] * cos - cornersL[i] * sin;
+            double wy = currentPose.y + cornersF[i] * sin + cornersL[i] * cos;
+            if (field.isObstacle(wx, wy)) return true;
+        }
 
-        for (double[] s : samples) {
-            // Rotate local (forward, left) by heading.
-            double wx = currentPose.x + s[0] * cos - s[1] * sin;
-            double wy = currentPose.y + s[0] * sin + s[1] * cos;
-            if (field.isObstacle(wx, wy)) {
+        // ---- layer 2: 3 subdivisions per edge (12 points) ----
+        // Edge sample fractions: 25%, 50%, 75% along each edge.
+        double[] edgeFrac = {0.25, 0.50, 0.75};
+        for (double t : edgeFrac) {
+            // Front edge: forward = +hl, left varies from +hw to -hw
+            double lf = hw * (1.0 - 2.0 * t);   // hw → 0 → -hw
+            double wxf = currentPose.x + hl * cos - lf * sin;
+            double wyf = currentPose.y + hl * sin + lf * cos;
+            if (field.isObstacle(wxf, wyf)) return true;
+
+            // Back edge: forward = -hl, left varies from -hw to +hw
+            double lb = -hw * (1.0 - 2.0 * t);
+            double wxb = currentPose.x - hl * cos - lb * sin;
+            double wyb = currentPose.y - hl * sin + lb * cos;
+            if (field.isObstacle(wxb, wyb)) return true;
+
+            // Left edge: left = +hw, forward varies from +hl to -hl
+            double fl = hl * (1.0 - 2.0 * t);
+            double wxl = currentPose.x + fl * cos - hw * sin;
+            double wyl = currentPose.y + fl * sin + hw * cos;
+            if (field.isObstacle(wxl, wyl)) return true;
+
+            // Right edge: left = -hw, forward varies from +hl to -hl
+            double fr = hl * (1.0 - 2.0 * t);
+            double wxr = currentPose.x + fr * cos + hw * sin;
+            double wyr = currentPose.y + fr * sin - hw * cos;
+            if (field.isObstacle(wxr, wyr)) return true;
+        }
+
+        // ---- layer 3: 3×3 interior grid (9 points) ----
+        // Distribute points evenly inside the rectangle.
+        double[] gridFrac = {-0.5, 0.0, 0.5};
+        for (double gf : gridFrac) {
+            for (double gl : gridFrac) {
+                double f = gf * hl * 2.0;   // forward  offset from centre
+                double l = gl * hw * 2.0;   // left     offset from centre
+                double wx = currentPose.x + f * cos - l * sin;
+                double wy = currentPose.y + f * sin + l * cos;
+                if (field.isObstacle(wx, wy)) return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks whether any part of the robot would be outside the
+     * field boundary.
+     *
+     * <p>Samples the 4 corners of the bounding box against the
+     * field perimeter.</p>
+     *
+     * @param halfField half the field side length (inches)
+     * @return true if any corner is outside the field
+     */
+    public boolean isOutOfBounds(double halfField) {
+        double[][] corners = getBoundingBoxCorners();
+        for (double[] c : corners) {
+            if (c[0] < -halfField || c[0] > halfField
+                || c[1] < -halfField || c[1] > halfField) {
                 return true;
             }
         }

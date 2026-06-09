@@ -209,6 +209,11 @@ public class AutoSimulationEngine {
             return;
         }
 
+        // ---- independent ball physics ----
+        // The ball is a free entity, not tethered to the robot.
+        // Update its physics every frame: gravity, floor/wall bounce.
+        ballEngine.updatePhysics(dt, FieldMap.HALF_FIELD);
+
         // Record trail point every ~0.1s.
         if (trail.isEmpty() || elapsedTime - getLastTrailTime() > 0.1) {
             trail.add(new Pose2d(robot.currentPose.x,
@@ -238,10 +243,30 @@ public class AutoSimulationEngine {
     // ---- per-command tick logic ----
 
     private void tickMoveTo(double dt, AutoCommand cmd) {
-        // On first frame: plan the path with A*.
+        // On first frame: clamp target if outside field, then plan path with A*.
         if (commandTimer <= dt + 0.0001) {
             targetX = cmd.params[0];
             targetY = cmd.params[1];
+
+            // ---- boundary clamping ----
+            // If the user-specified target is outside the playable field,
+            // clamp it to the intersection of the line (currentPos → target)
+            // with the field perimeter, so the robot drives to the edge
+            // instead of crashing or failing.
+            double margin = Math.max(robot.getProfile().width,
+                                     robot.getProfile().length) / 2.0;
+            if (!field.isInsideField(targetX, targetY, margin)) {
+                double[] clamped = field.clampToBoundary(
+                    robot.currentPose.x, robot.currentPose.y,
+                    targetX, targetY, margin);
+                log(String.format("[%.0fs] ⚠️ Target (%.1f, %.1f) is outside "
+                                  + "field! Clamped to boundary at (%.1f, %.1f).",
+                                  elapsedTime, targetX, targetY,
+                                  clamped[0], clamped[1]));
+                targetX = clamped[0];
+                targetY = clamped[1];
+            }
+
             log(String.format("[%.0fs] 🚀 A* pathfinding to (%.1f, %.1f)...",
                               elapsedTime, targetX, targetY));
 
@@ -467,8 +492,8 @@ public class AutoSimulationEngine {
                               elapsedTime, v0, activeGoal.cx, activeGoal.cy));
         }
 
-        // Update ball physics.
-        String result = ballEngine.update(dt, activeGoal);
+        // Update ball physics with wall collision.
+        String result = ballEngine.update(dt, FieldMap.HALF_FIELD, activeGoal);
         if (result != null) {
             log(String.format("[%.0fs] %s", elapsedTime, result));
             advanceCommand();

@@ -1,10 +1,10 @@
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Camera.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/SimState.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/Sources/FTCSimRenderer/main.swift
-/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/AppDelegate.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/Camera.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/ContentView.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/MeshGenerator.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/MetalView.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/Renderer.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/SimClient.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/SimState.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/Sources/FTCSimRenderer/main.swift'
+'/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer.build/DerivedSources/resource_bundle_accessor.swift'

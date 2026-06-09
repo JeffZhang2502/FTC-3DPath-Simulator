@@ -3,7 +3,7 @@ import Foundation
 extension Foundation.Bundle {
     static nonisolated let module: Bundle = {
         let mainPath = Bundle.main.bundleURL.appendingPathComponent("FTCSimRenderer_FTCSimRenderer.bundle").path
-        let buildPath = "/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle"
+        let buildPath = "/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer_FTCSimRenderer.bundle"
 
         let preferredBundle = Bundle(path: mainPath)
 

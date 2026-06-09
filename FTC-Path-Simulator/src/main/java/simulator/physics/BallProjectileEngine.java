@@ -1,19 +1,23 @@
 package simulator.physics;
 
-import java.util.ArrayList;
 import java.util.List;
+import simulator.model.Ball;
 
 /**
  * 3D projectile-motion engine for a ball launched by the robot.
  *
- * <p>Simulates parabolic flight under gravity (g = 386.09 in/s²).
- * Tracks the ball's (x, y, z) position over time and evaluates
- * whether it lands inside a scoring goal.</p>
+ * <p>Simulates parabolic flight under gravity (g = 386.09 in/s²)
+ * using the elastic {@link Ball} model.  Evaluates whether the ball
+ * lands inside a scoring goal and handles rim-bounce physics for
+ * near-miss deflections.</p>
+ *
+ * <p>The engine delegates core physics (gravity, wall/floor bounce)
+ * to {@link Ball} and adds goal-specific scoring logic on top.</p>
  */
 public class BallProjectileEngine {
 
     /** Gravitational acceleration in inches per second². */
-    public static final double G = 386.09;
+    public static final double G = Ball.G;
 
     /** Goal rim height in inches above the field floor. */
     public static final double GOAL_HEIGHT = 38.75;
@@ -24,20 +28,13 @@ public class BallProjectileEngine {
     /** Coefficient of restitution for rim bounce (ball vs metal). */
     public static final double RESTITUTION = 0.58;
 
-    // ---- ball state ----
+    // ---- ball ----
 
-    private double x0, y0, z0;   // launch origin
-    private double x, y, z;      // current world position (inches)
-    private double vx, vy, vz;   // velocity components (inches/sec)
-    private double flightTime;   // seconds since launch
-    private boolean active;
+    private final Ball ball;
     private boolean scored;
 
-    // ---- trajectory log ----
+    // ---- World position & radius of a scoring goal. ----
 
-    private final List<double[]> trajectory = new ArrayList<>();
-
-    /** World position & radius of a scoring goal. */
     public static class GoalBox {
         public final double cx, cy;   // center on the field floor
         public final double radius;   // acceptance radius
@@ -52,62 +49,80 @@ public class BallProjectileEngine {
 
     // ---- lifecycle ----
 
+    public BallProjectileEngine() {
+        this.ball = new Ball(Ball.DEFAULT_RADIUS, Ball.DEFAULT_RESTITUTION);
+    }
+
+    public BallProjectileEngine(Ball ball) {
+        this.ball = ball;
+    }
+
     public void reset() {
-        x = y = z = 0;
-        vx = vy = vz = 0;
-        flightTime = 0;
-        active = false;
+        ball.reset();
         scored = false;
-        trajectory.clear();
     }
 
     /**
      * Launch the ball from the robot's current pose.
      *
-     * @param x0         robot world X (inches)
-     * @param y0         robot world Y (inches)
-     * @param z0         launch height above floor (inches), typically ~8"
-     * @param headingRad robot heading in radians
+     * @param x0             robot world X (inches)
+     * @param y0             robot world Y (inches)
+     * @param z0             launch height above floor (inches)
+     * @param headingRad     robot heading in radians
      * @param launchAngleDeg launch elevation above horizontal (degrees)
-     * @param v0         muzzle velocity magnitude (inches/sec)
+     * @param v0             muzzle velocity magnitude (inches/sec)
      */
     public void launch(double x0, double y0, double z0,
                        double headingRad, double launchAngleDeg, double v0) {
         reset();
-        this.x0 = x0;
-        this.y0 = y0;
-        this.z0 = z0;
+        ball.launch(x0, y0, z0, headingRad, launchAngleDeg, v0);
+    }
 
-        double theta = Math.toRadians(launchAngleDeg);
-        double cosTheta = Math.cos(theta);
+    /** Place the ball at a static position (visible but idle). */
+    public void placeAt(double x, double y, double z) {
+        reset();
+        ball.placeAt(x, y, z);
+    }
 
-        this.vx = v0 * cosTheta * Math.cos(headingRad);
-        this.vy = v0 * cosTheta * Math.sin(headingRad);
-        this.vz = v0 * Math.sin(theta);
-
-        this.active = true;
-        this.x = x0; this.y = y0; this.z = z0;
-        record();
+    /**
+     * Independent physics-only update — gravity, floor bounce, wall
+     * bounce — without any goal-scoring check.  Call this every frame
+     * so the ball exists as a free, independent entity on the field.
+     *
+     * @param dt        time delta (seconds)
+     * @param halfField half the field side length for wall collision
+     */
+    public void updatePhysics(double dt, double halfField) {
+        if (!ball.isActive()) return;
+        ball.update(dt);
+        ball.checkWallCollision(halfField);
     }
 
     /**
      * Advance the simulation by {@code dt} seconds.
      *
-     * @param goal  the target goal box to check against
+     * @param dt        time delta (seconds)
+     * @param halfField half the field side length for wall collision
+     * @param goal      the target goal box to check against (null = physics only)
      * @return status message, or null if still in flight
      */
-    public String update(double dt, GoalBox goal) {
-        if (!active) return null;
+    public String update(double dt, double halfField, GoalBox goal) {
+        if (!ball.isActive()) return null;
 
-        flightTime += dt;
+        // Delegate core physics to Ball.
+        ball.update(dt);
 
-        // Recompute from absolute time — no accumulation drift.
-        double t = flightTime;
-        x = x0 + vx * t;
-        y = y0 + vy * t;
-        z = z0 + vz * t - 0.5 * G * t * t;
+        // Check wall collisions (elastic bounce off perimeter).
+        ball.checkWallCollision(halfField);
 
-        record();
+        if (!ball.isActive()) return null;
+
+        // If no goal to check against, physics-only update.
+        if (goal == null) return null;
+
+        double x = ball.getX();
+        double y = ball.getY();
+        double z = ball.getZ();
 
         // ---- goal-plane scoring & rim-bounce (§10 scoring spec) ----
         if (z <= goal.height) {
@@ -117,7 +132,7 @@ public class BallProjectileEngine {
 
             // Inside the inner-radius → SCORE.
             if (dist <= goal.radius) {
-                active = false;
+                ball.setActive(false);
                 scored = true;
                 return String.format("⚽ GOAL! Ball inside rim at (%.1f, %.1f), "
                                      + "dist=%.1f in ≤ R=%.1f in",
@@ -130,38 +145,29 @@ public class BallProjectileEngine {
                 // Compute contact normal from goal centre to ball.
                 double nx = dx / dist;
                 double ny = dy / dist;
-                double nz = 0.0;   // rim is horizontal
 
-                // Reflect velocity:  v' = v − (1+e)(v·n)n
-                double vDotN = vx * nx + vy * ny + vz * nz;
+                // Reflect velocity using Ball's bounce method.
+                double vx = ball.getVx();
+                double vy = ball.getVy();
+                double vDotN = vx * nx + vy * ny;
                 if (vDotN < 0) {   // ball moving toward rim
-                    double bounceFactor = (1.0 + RESTITUTION) * (-vDotN);
-                    vx += bounceFactor * nx;
-                    vy += bounceFactor * ny;
-                    vz += bounceFactor * nz;
-
-                    // Recompute from new vx/vy/vz from the bounce point.
-                    x0 = x; y0 = y; z0 = z;
-                    flightTime = 0;
-                    active = true;   // continue flight with new initial conditions
+                    ball.bounce(nx, ny, 0.0);
 
                     return String.format("💥 Rim bounce! V=(%.0f,%.0f,%.0f) in/s, "
-                                         + "ball deflected.", vx, vy, vz);
+                                         + "ball deflected.",
+                                         ball.getVx(), ball.getVy(), ball.getVz());
                 }
             }
 
-            // Ball missed the goal entirely — fall through to floor check.
-            active = false;
-            z = 0;
+            // Ball missed the goal entirely.
+            ball.setActive(false);
             return String.format("🌍 Ball missed goal at (%.1f, %.1f), dist=%.1f in.",
                                  x, y, dist);
         }
 
         // Ball hit the floor without reaching goal height.
-        if (z <= 0) {
-            active = false;
-            z = 0;
-            return String.format("🌍 Ball grounded at (%.1f, %.1f) — too low.", x, y);
+        if (!ball.isActive()) {
+            return String.format("🌍 Ball grounded at (%.1f, %.1f).", x, y);
         }
 
         return null;   // still in flight
@@ -170,29 +176,28 @@ public class BallProjectileEngine {
     /** Directly recompute position for given absolute time (used for rendering). */
     public void recomputeAt(double t, double x0, double y0, double z0,
                             double headingRad, double launchAngleDeg, double v0) {
-        this.flightTime = t;
-        double theta = Math.toRadians(launchAngleDeg);
-        double vh = v0 * Math.cos(theta);
-        this.x = x0 + vh * Math.cos(headingRad) * t;
-        this.y = y0 + vh * Math.sin(headingRad) * t;
-        this.z = z0 + v0 * Math.sin(theta) * t - 0.5 * G * t * t;
-    }
-
-    private void record() {
-        trajectory.add(new double[] {x, y, z});
+        ball.recomputeAt(t, x0, y0, z0, headingRad, launchAngleDeg, v0);
     }
 
     // ---- queries ----
 
-    public double getX()       { return x; }
-    public double getY()       { return y; }
-    public double getZ()       { return z; }
-    public boolean isActive()  { return active; }
-    public boolean isScored()  { return scored; }
-    public double getFlightTime() { return flightTime; }
+    /** Returns the underlying elastic Ball model. */
+    public Ball getBall() {
+        return ball;
+    }
+
+    public double getX()              { return ball.getX(); }
+    public double getY()              { return ball.getY(); }
+    public double getZ()              { return ball.getZ(); }
+    public double getVx()             { return ball.getVx(); }
+    public double getVy()             { return ball.getVy(); }
+    public double getVz()             { return ball.getVz(); }
+    public boolean isActive()         { return ball.isActive(); }
+    public boolean isScored()         { return scored; }
+    public double getFlightTime()     { return ball.getFlightTime(); }
 
     /** Returns a copy of the (x,y,z) trajectory points for rendering. */
     public List<double[]> getTrajectory() {
-        return new ArrayList<>(trajectory);
+        return ball.getTrajectory();
     }
 }

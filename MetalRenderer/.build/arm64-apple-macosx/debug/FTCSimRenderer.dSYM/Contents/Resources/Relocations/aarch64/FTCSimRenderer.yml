@@ -1,6 +1,6 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/h0pe_wsv/Desktop/FTC-3DPath-Simulator-main/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer'
+binary-path:     "/Users/h0pe_wsv/Desktop/开发区域/1/FTC-3DPath-Simulator-main-mac os version/MetalRenderer/.build/arm64-apple-macosx/debug/FTCSimRenderer"
 relocations:
   - { offset: 0x1014BD, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer11AppDelegateC6window33_41CB7E30CCA7A599177749B5A38EB339LLSo8NSWindowCSgvpfi', symObjAddr: 0x0, symBinAddr: 0x1000016A8, symSize: 0x8 }
   - { offset: 0x1014D5, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer11AppDelegateC6window33_41CB7E30CCA7A599177749B5A38EB339LLSo8NSWindowCSgvpfi', symObjAddr: 0x0, symBinAddr: 0x1000016A8, symSize: 0x8 }
@@ -631,13 +631,13 @@ relocations:
   - { offset: 0x108BC8, size: 0x8, addend: 0x0, symName: '_$sSo7MTKViewC5frame6deviceABSo6CGRectV_So9MTLDevice_pSgtcfcTO', symObjAddr: 0x30E0, symBinAddr: 0x1000211CC, symSize: 0x5C }
   - { offset: 0x108BDC, size: 0x8, addend: 0x0, symName: '_$sSo22NSPanGestureRecognizerC6target6actionABypSg_10ObjectiveC8SelectorVSgtcfcTO', symObjAddr: 0x313C, symBinAddr: 0x100021228, symSize: 0x108 }
   - { offset: 0x108E05, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer0B0C6device33_75A9195D8B03AC106A848E13C7EF7807LLSo9MTLDevice_pvg', symObjAddr: 0x0, symBinAddr: 0x100021330, symSize: 0x3C }
-  - { offset: 0x108E2A, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO16obeliskFaceWidthSdvpZ', symObjAddr: 0x83D0, symBinAddr: 0x100044C70, symSize: 0x0 }
-  - { offset: 0x108E45, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO13obeliskHeightSdvpZ', symObjAddr: 0x83D8, symBinAddr: 0x100044C78, symSize: 0x0 }
-  - { offset: 0x108E60, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO15obeliskInradiusSdvpZ', symObjAddr: 0x1D9A8, symBinAddr: 0x100057E20, symSize: 0x0 }
-  - { offset: 0x108E7B, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO19obeliskCircumRadiusSdvpZ', symObjAddr: 0x1D9B0, symBinAddr: 0x100057E28, symSize: 0x0 }
-  - { offset: 0x108E96, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO14obeliskCenterXSdvpZ', symObjAddr: 0x83E0, symBinAddr: 0x100044C80, symSize: 0x0 }
-  - { offset: 0x108EB1, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO14obeliskCenterYSdvpZ', symObjAddr: 0x1D9B8, symBinAddr: 0x100057E30, symSize: 0x0 }
-  - { offset: 0x108ECC, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer12shaderSource33_75A9195D8B03AC106A848E13C7EF7807LLSSvp', symObjAddr: 0x1D9C0, symBinAddr: 0x100057E38, symSize: 0x0 }
+  - { offset: 0x108E2A, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO16obeliskFaceWidthSdvpZ', symObjAddr: 0x83D0, symBinAddr: 0x100044C90, symSize: 0x0 }
+  - { offset: 0x108E45, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO13obeliskHeightSdvpZ', symObjAddr: 0x83D8, symBinAddr: 0x100044C98, symSize: 0x0 }
+  - { offset: 0x108E60, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO15obeliskInradiusSdvpZ', symObjAddr: 0x1DB48, symBinAddr: 0x100057E20, symSize: 0x0 }
+  - { offset: 0x108E7B, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO19obeliskCircumRadiusSdvpZ', symObjAddr: 0x1DB50, symBinAddr: 0x100057E28, symSize: 0x0 }
+  - { offset: 0x108E96, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO14obeliskCenterXSdvpZ', symObjAddr: 0x83E0, symBinAddr: 0x100044CA0, symSize: 0x0 }
+  - { offset: 0x108EB1, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8FieldMap33_75A9195D8B03AC106A848E13C7EF7807LLO14obeliskCenterYSdvpZ', symObjAddr: 0x1DB58, symBinAddr: 0x100057E30, symSize: 0x0 }
+  - { offset: 0x108ECC, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer12shaderSource33_75A9195D8B03AC106A848E13C7EF7807LLSSvp', symObjAddr: 0x1DB60, symBinAddr: 0x100057E38, symSize: 0x0 }
   - { offset: 0x1094F3, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer0B0C6cameraAA6CameraVvpfi', symObjAddr: 0x260, symBinAddr: 0x100021590, symSize: 0x38 }
   - { offset: 0x10950B, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer0B0C11aspectRatio33_75A9195D8B03AC106A848E13C7EF7807LLSfvpfi', symObjAddr: 0x434, symBinAddr: 0x100021764, symSize: 0x8 }
   - { offset: 0x109523, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer0B0C10brightnessSfvpfi', symObjAddr: 0x504, symBinAddr: 0x100021834, symSize: 0x8 }
@@ -1311,17 +1311,17 @@ relocations:
   - { offset: 0x110D15, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer13ServerMessageVSeAASe4fromxs7Decoder_p_tKcfCTW', symObjAddr: 0x6E6C, symBinAddr: 0x100039F34, symSize: 0x6C }
   - { offset: 0x110D29, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer13ServerMessageVSEAASE6encode2toys7Encoder_p_tKFTW', symObjAddr: 0x6ED8, symBinAddr: 0x100039FA0, symSize: 0x70 }
   - { offset: 0x110ECE, size: 0x8, addend: 0x0, symName: _FTCSimRenderer_main, symObjAddr: 0x0, symBinAddr: 0x10003D374, symSize: 0x2B8 }
-  - { offset: 0x110EF2, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer3appSo13NSApplicationCvp', symObjAddr: 0x23C8, symBinAddr: 0x100059208, symSize: 0x0 }
-  - { offset: 0x110F0C, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8delegateAA11AppDelegateCvp', symObjAddr: 0x23D0, symBinAddr: 0x100059210, symSize: 0x0 }
+  - { offset: 0x110EF2, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer3appSo13NSApplicationCvp', symObjAddr: 0x2530, symBinAddr: 0x100059208, symSize: 0x0 }
+  - { offset: 0x110F0C, size: 0x8, addend: 0x0, symName: '_$s14FTCSimRenderer8delegateAA11AppDelegateCvp', symObjAddr: 0x2538, symBinAddr: 0x100059210, symSize: 0x0 }
   - { offset: 0x110F1A, size: 0x8, addend: 0x0, symName: _FTCSimRenderer_main, symObjAddr: 0x0, symBinAddr: 0x10003D374, symSize: 0x2B8 }
   - { offset: 0x11109A, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6module_WZ', symObjAddr: 0x0, symBinAddr: 0x10003D62C, symSize: 0x1C }
-  - { offset: 0x1110BE, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvpZ', symObjAddr: 0x2C28, symBinAddr: 0x100059218, symSize: 0x0 }
+  - { offset: 0x1110BE, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvpZ', symObjAddr: 0x2DA0, symBinAddr: 0x100059218, symSize: 0x0 }
   - { offset: 0x1110CC, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6module_WZ', symObjAddr: 0x0, symBinAddr: 0x10003D62C, symSize: 0x1C }
-  - { offset: 0x1110E6, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvau', symObjAddr: 0x578, symBinAddr: 0x10003DBA4, symSize: 0x50 }
-  - { offset: 0x111104, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleCMa', symObjAddr: 0x604, symBinAddr: 0x10003DC30, symSize: 0x60 }
-  - { offset: 0x111118, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleCSgWOh', symObjAddr: 0x664, symBinAddr: 0x10003DC90, symSize: 0x30 }
-  - { offset: 0x1111A9, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvpZfiAByXEfU_', symObjAddr: 0x1C, symBinAddr: 0x10003D648, symSize: 0x518 }
-  - { offset: 0x111268, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC4pathABSgSS_tcfC', symObjAddr: 0x534, symBinAddr: 0x10003DB60, symSize: 0x44 }
-  - { offset: 0x11127C, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvgZ', symObjAddr: 0x5C8, symBinAddr: 0x10003DBF4, symSize: 0x3C }
-  - { offset: 0x1112A0, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC4pathABSgSS_tcfcTO', symObjAddr: 0x6BC, symBinAddr: 0x10003DCC0, symSize: 0x5C }
+  - { offset: 0x1110E6, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvau', symObjAddr: 0x56C, symBinAddr: 0x10003DB98, symSize: 0x50 }
+  - { offset: 0x111104, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleCMa', symObjAddr: 0x5F8, symBinAddr: 0x10003DC24, symSize: 0x60 }
+  - { offset: 0x111118, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleCSgWOh', symObjAddr: 0x658, symBinAddr: 0x10003DC84, symSize: 0x30 }
+  - { offset: 0x1111A9, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvpZfiAByXEfU_', symObjAddr: 0x1C, symBinAddr: 0x10003D648, symSize: 0x50C }
+  - { offset: 0x111268, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC4pathABSgSS_tcfC', symObjAddr: 0x528, symBinAddr: 0x10003DB54, symSize: 0x44 }
+  - { offset: 0x11127C, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC14FTCSimRendererE6moduleABvgZ', symObjAddr: 0x5BC, symBinAddr: 0x10003DBE8, symSize: 0x3C }
+  - { offset: 0x1112A0, size: 0x8, addend: 0x0, symName: '_$sSo8NSBundleC4pathABSgSS_tcfcTO', symObjAddr: 0x6B0, symBinAddr: 0x10003DCB4, symSize: 0x5C }
 ...

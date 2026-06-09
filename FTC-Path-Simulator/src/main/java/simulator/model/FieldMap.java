@@ -158,6 +158,138 @@ public class FieldMap {
         return Math.hypot(dx, dy) <= OBELISK_CIRCRADIUS + 0.5;
     }
 
+    // ---- boundary queries ----
+
+    /**
+     * Checks whether a world point is inside the playable field area
+     * (within the perimeter walls).
+     */
+    public boolean isInsideField(double wx, double wy) {
+        return wx >= -HALF_FIELD && wx <= HALF_FIELD
+            && wy >= -HALF_FIELD && wy <= HALF_FIELD;
+    }
+
+    /**
+     * Checks whether a world point is inside the field with a margin
+     * (e.g. robot half-width) so the entire robot stays in bounds.
+     */
+    public boolean isInsideField(double wx, double wy, double margin) {
+        return wx >= -HALF_FIELD + margin && wx <= HALF_FIELD - margin
+            && wy >= -HALF_FIELD + margin && wy <= HALF_FIELD - margin;
+    }
+
+    /**
+     * Clamps a target point to the field boundary.
+     *
+     * <p>Given a start point (presumed inside the field) and a target
+     * point that may lie outside, computes the intersection of the
+     * line segment with the field boundary rectangle and returns the
+     * nearest intersection point.  If the target is already inside
+     * the field it is returned unchanged.</p>
+     *
+     * @param x1  start X (world inches)
+     * @param y1  start Y (world inches)
+     * @param x2  target X (world inches)
+     * @param y2  target Y (world inches)
+     * @return a 2-element array {clampedX, clampedY} on the boundary,
+     *         or {x1, y1} if start is already outside
+     */
+    public double[] clampToBoundary(double x1, double y1, double x2, double y2) {
+        return clampToBoundary(x1, y1, x2, y2, 0.0);
+    }
+
+    /**
+     * Clamps a target point to the field boundary with a robot margin.
+     *
+     * <p>The margin (e.g. half the robot width) shrinks the effective
+     * boundary so the entire robot stays within the field.  Uses the
+     * Liang-Barsky line-clipping algorithm against the effective
+     * boundary rectangle.</p>
+     *
+     * @param x1     start X (world inches)
+     * @param y1     start Y (world inches)
+     * @param x2     target X (world inches)
+     * @param y2     target Y (world inches)
+     * @param margin inset from each wall (robot half-size)
+     * @return a 2-element array {clampedX, clampedY}
+     */
+    public double[] clampToBoundary(double x1, double y1, double x2, double y2,
+                                    double margin) {
+        double left   = -HALF_FIELD + margin;
+        double right  =  HALF_FIELD - margin;
+        double bottom = -HALF_FIELD + margin;
+        double top    =  HALF_FIELD - margin;
+
+        // If target is already inside the effective boundary, keep it.
+        if (x2 >= left && x2 <= right && y2 >= bottom && y2 <= top) {
+            return new double[] {x2, y2};
+        }
+
+        // Liang-Barsky line clipping.
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+
+        // Handle degenerate case: zero-length segment.
+        if (Math.abs(dx) < 1e-12 && Math.abs(dy) < 1e-12) {
+            // Clamp the point itself.
+            double cx = Math.max(left, Math.min(right, x1));
+            double cy = Math.max(bottom, Math.min(top, y1));
+            return new double[] {cx, cy};
+        }
+
+        double[] p = {-dx, dx, -dy, dy};
+        double[] q = {x1 - left, right - x1, y1 - bottom, top - y1};
+
+        double u1 = 0.0, u2 = 1.0;
+
+        for (int i = 0; i < 4; i++) {
+            if (Math.abs(p[i]) < 1e-12) {
+                // Line is parallel to this edge.
+                if (q[i] < 0) {
+                    // Line is outside — clamp start point.
+                    double cx = Math.max(left, Math.min(right, x1));
+                    double cy = Math.max(bottom, Math.min(top, y1));
+                    return new double[] {cx, cy};
+                }
+            } else {
+                double u = q[i] / p[i];
+                if (p[i] < 0) {
+                    if (u > u2) {
+                        // Outside.
+                        double cx = Math.max(left, Math.min(right, x1));
+                        double cy = Math.max(bottom, Math.min(top, y1));
+                        return new double[] {cx, cy};
+                    }
+                    u1 = Math.max(u1, u);
+                } else {
+                    if (u < u1) {
+                        double cx = Math.max(left, Math.min(right, x1));
+                        double cy = Math.max(bottom, Math.min(top, y1));
+                        return new double[] {cx, cy};
+                    }
+                    u2 = Math.min(u2, u);
+                }
+            }
+        }
+
+        // If u1 > u2 the segment is entirely outside.
+        if (u1 > u2) {
+            double cx = Math.max(left, Math.min(right, x1));
+            double cy = Math.max(bottom, Math.min(top, y1));
+            return new double[] {cx, cy};
+        }
+
+        // Intersection with the entering edge gives the clamped point.
+        double clampedX = x1 + u2 * dx;
+        double clampedY = y1 + u2 * dy;
+
+        // Final safety clamp.
+        clampedX = Math.max(left, Math.min(right, clampedX));
+        clampedY = Math.max(bottom, Math.min(top, clampedY));
+
+        return new double[] {clampedX, clampedY};
+    }
+
     /** Checks if a point is within the perimeter wall footprint. */
     public boolean isInsidePerimeterWall(double wx, double wy) {
         double wallHalfThick = 0.625;   // ~⅝" wall panel thickness
