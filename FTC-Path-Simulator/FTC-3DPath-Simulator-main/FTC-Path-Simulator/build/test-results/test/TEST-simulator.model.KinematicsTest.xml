@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="simulator.model.KinematicsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-06-08T06:57:56" hostname="SUPER" time="0.053">
+  <properties/>
+  <testcase name="pureForward_AllWheelsEqualAndPositive()" classname="simulator.model.KinematicsTest" time="0.041"/>
+  <testcase name="pureRotation_LeftAndRightOppositeDirection()" classname="simulator.model.KinematicsTest" time="0.002"/>
+  <testcase name="forwardKinematics_RoundTrip_PureRotation()" classname="simulator.model.KinematicsTest" time="0.001"/>
+  <testcase name="forwardKinematics_RoundTrip_PureForward()" classname="simulator.model.KinematicsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
